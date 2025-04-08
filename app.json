@@ -2,7 +2,7 @@
   "expo": {
     "name": "date-display-app",
     "slug": "date-display-app",
-    "owner": "your-expo-username",
+    "owner": "{{EXPO_USERNAME}}",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
