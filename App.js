@@ -9,7 +9,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <ErrorBoundary>
-        <SafeAreaView style={styles.container}}>
+        <SafeAreaView style={styles.container}>
           <HomeScreen />
           <StatusBar style="auto" />
         </SafeAreaView>
