@@ -17,8 +17,17 @@ jobs:
           node-version: 18.x
           cache: npm
 
+      - name: Update app.json with Expo username
+        run: |
+          # Replace placeholder with actual username from secrets
+          sed -i "s/{{EXPO_USERNAME}}/${{ secrets.EXPO_USERNAME }}/g" app.json
+          
+          # Show the updated file
+          echo "Updated app.json:"
+          cat app.json
+
       - name: Install dependencies
-        run: npm ci || npm install --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Install EAS CLI
         run: npm install -g eas-cli
@@ -35,19 +44,6 @@ jobs:
       - name: Login to Expo
         run: |
           CI=1 npx expo login -u ${{ secrets.EXPO_USERNAME }} -p ${{ secrets.EXPO_PASSWORD }}
-        
-      - name: Fix app.json project ID
-        run: |
-          # Create a temporary app.json without the projectId and updates URL
-          cat app.json | \
-          sed 's/"extra": {.*"projectId": "[^"]*".*}/{"extra": {}}/' | \
-          sed 's/"updates": {.*"url": "[^"]*".*}//' > app.json.tmp
-          
-          # Move the temporary file to app.json
-          mv app.json.tmp app.json
-          
-          # Show the updated file
-          cat app.json
           
       - name: Initialize EAS
         run: |
@@ -60,7 +56,6 @@ jobs:
           echo "EAS CLI version: $(eas --version || echo 'not found')"
           echo "Expo CLI version: $(expo --version || echo 'not found')"
           echo "Current directory: $(pwd)"
-          echo "Files in current directory: $(ls -la)"
           echo "Current app.json content:"
           cat app.json
           
