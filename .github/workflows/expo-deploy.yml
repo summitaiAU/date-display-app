@@ -15,18 +15,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-
-      - name: Fix package.json dependencies
-        run: |
-          # Check and fix the package.json file
-          if grep -q "expo-error-recovery@~5.4.2" package.json; then
-            # Replace the invalid version with a valid one
-            sed -i 's/"expo-error-recovery": "~5.4.2"/"expo-error-recovery": "~4.0.2"/g' package.json
-            echo "Fixed expo-error-recovery version in package.json"
-          fi
+          cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci || npm install --legacy-peer-deps
 
       - name: Setup EAS
         uses: expo/expo-github-action@v8
