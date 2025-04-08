@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install --legacy-peer-deps
 
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
       - name: Setup EAS
         uses: expo/expo-github-action@v8
         with:
@@ -34,8 +37,17 @@ jobs:
       - name: Initialize EAS if needed
         run: |
           if ! grep -q '"projectId"' app.json; then
-            npx eas init --non-interactive
+            npx eas init --non-interactive --force
           fi
+          
+      - name: Check Environment
+        run: |
+          echo "Node version: $(node -v)"
+          echo "npm version: $(npm -v)"
+          echo "EAS CLI version: $(eas --version || echo 'not found')"
+          echo "Expo CLI version: $(expo --version || echo 'not found')"
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory: $(ls -la)"
           
       - name: Publish update
         run: |
